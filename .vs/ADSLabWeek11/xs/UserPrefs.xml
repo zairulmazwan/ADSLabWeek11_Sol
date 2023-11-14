@@ -1,0 +1,26 @@
+﻿<Properties StartupConfiguration="{B3B39A92-ADA3-46BE-9D01-1B449B8A720F}|Default">
+  <MonoDevelop.Ide.ItemProperties.ADSLabWeek11 PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="ADSLabWeek11/Program.cs">
+    <Files>
+      <File FileName="ADSLabWeek11/Program.cs" Line="8" Column="98" />
+      <File FileName="ADSLabWeek11/FileData.cs" Line="62" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="ADSLabWeek11" expanded="True">
+            <Node name="ADSLabWeek11" expanded="True">
+              <Node name="Program.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+</Properties>
