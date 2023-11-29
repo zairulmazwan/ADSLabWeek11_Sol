@@ -23,7 +23,7 @@ public class HillClimbing
     {
         foreach(int x in solution)
         {
-            Console.WriteLine(x);
+            Console.Write(x);
         }
     }
 
@@ -87,11 +87,14 @@ public class Experiment
         Console.WriteLine("Running Experiments...");
         int iter=200;
 
+        //Declare a 2D array to save the experiment results. Should be size of [iter,3], col 0: iter, col 1: current fitness, col 2: new fitness
         double [,] results = new double[iter,3];
+
+        //Declare a list of list variable to store the solutions
         List<List<int>> new_solutions = new List<List<int>>();
 
         //Read the dataset
-        List<Double> data = FileData.readData("Sample_6/data.csv");
+        List<Double> data = FileData.readData("dataset.csv");
 
         //Initialise a random solution for HC
         HillClimbing sol = new HillClimbing(data);
@@ -120,9 +123,9 @@ public class Experiment
             results[i,1] = sol.getFitness();
             results[i,2] = newSol.getFitness();
         }
-        //  Console.WriteLine("Final fitness: "+sol.fitness);
-        //  Console.WriteLine("Final solution ");
-        //  sol.printSolution();
+         Console.WriteLine("Final fitness: "+sol.getFitness());
+         Console.WriteLine("Final solution ");
+         sol.printSolution();
          FileData.writeFile(sol.solution,"final_sol.csv");
          FileData.writeFitnessResults(results, "results.csv");
          FileData.writeSolutions(new_solutions,"new_solutions.csv");
