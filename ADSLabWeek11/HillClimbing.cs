@@ -55,10 +55,15 @@ public class HillClimbing
         return fitness;
     }
 
-    public List<int> copySolution()
+    public HillClimbing copySolution()
     {
-        List<int> res = new List<int>();
-        res = solution.ToList();
+
+        HillClimbing res = (HillClimbing)this.MemberwiseClone();
+        res.solution = new (solution);
+        res.fitness = fitness;
+        // List<int> res = new List<int>();
+        // res = solution.ToList();
+        // getFitness();
         return res;
     }
 
@@ -77,12 +82,13 @@ public class HillClimbing
         {
             solution[ind] = 0;
         }
+        calCurrentFit();
     }
 }
 
 public class Experiment
 {
-    public static void runExp ()
+    public static void runHCExp ()
     {
         Console.WriteLine("Running Experiments...");
         int iter=200;
@@ -106,28 +112,85 @@ public class Experiment
 
         for(int i=0; i<iter; i++)
         {
+            results[i,0] = i;
+            results[i,1] = sol.fitness;
             // Console.WriteLine("ITER "+i);
             HillClimbing newSol = new HillClimbing(data);
-            newSol.solution = sol.copySolution();
+            newSol = sol.copySolution();
             newSol.smallChange();
             new_solutions.Add(newSol.solution);
 
             // Console.WriteLine("Fitness: "+sol.fitness);
             // Console.WriteLine("New Fitness: "+newSol.fitness);
 
-            if(newSol.getFitness()<sol.getFitness()){
-                sol.solution = newSol.copySolution();
+            if(newSol.fitness<sol.fitness){
+                sol = newSol.copySolution();
                 //sol.fitness = newSol.fitness;
             }
-            results[i,0] = i;
-            results[i,1] = sol.getFitness();
-            results[i,2] = newSol.getFitness();
+            
+            results[i,2] = newSol.fitness;
         }
+         Console.WriteLine("::Results for HC::");
          Console.WriteLine("Final fitness: "+sol.getFitness());
          Console.WriteLine("Final solution ");
          sol.printSolution();
          FileData.writeFile(sol.solution,"final_sol.csv");
          FileData.writeFitnessResults(results, "results.csv");
          FileData.writeSolutions(new_solutions,"new_solutions.csv");
+    }
+
+    public static void runSHCExp ()
+    {
+        Console.WriteLine("Running Experiments...");
+        int iter=200;
+
+        //Declare a 2D array to save the experiment results. Should be size of [iter,3], col 0: iter, col 1: current fitness, col 2: new fitness
+        double [,] results = new double[iter,4];
+
+        //Declare a list of list variable to store the solutions
+        List<List<int>> new_solutions = new List<List<int>>();
+
+        //Read the dataset
+        List<Double> data = FileData.readData("dataset.csv");
+
+        //Initialise a random solution for HC
+        HillClimbing sol = new HillClimbing(data);
+
+        Console.WriteLine("Initial fitness: "+sol.fitness);
+        Console.WriteLine("Initial solution ");
+        // sol.printSolution();
+        FileData.writeFile(sol.solution,"init_sol.csv");
+
+        for(int i=0; i<iter; i++)
+        {
+            results[i,0] = i;
+            results[i,1] = sol.fitness;
+            // Console.WriteLine("ITER "+i);
+            HillClimbing newSol = new HillClimbing(data);
+            newSol = sol.copySolution();
+            newSol.smallChange();
+            new_solutions.Add(newSol.solution);
+
+            // Console.WriteLine("Fitness: "+sol.fitness);
+            // Console.WriteLine("New Fitness: "+newSol.fitness);
+            double T = 25.00;
+            double pr = 1/(1+(Math.Pow(Math.Exp(1),(newSol.getFitness()-sol.getFitness())/T)));
+            // Console.WriteLine("Prob: "+pr);
+           
+            if(pr >= 0.47){
+                sol = newSol.copySolution();
+                //sol.fitness = newSol.fitness;
+            }
+            
+            results[i,2] = newSol.fitness;
+            results[i,3] = pr;
+        }
+         Console.WriteLine("::Results for SHC::");
+         Console.WriteLine("Final fitness: "+sol.fitness);
+         Console.WriteLine("Final solution ");
+         sol.printSolution();
+         FileData.writeFile(sol.solution,"final_sol_SCH.csv");
+         FileData.writeFitnessResults(results, "results_SCH.csv");
+         FileData.writeSolutions(new_solutions,"new_solutions_SCH.csv");
     }
 }
